@@ -18,7 +18,8 @@
     "*.+(json|css|md)": [
       "prettier --write",
       "git add"
-    ]
+    ],
+    "*.js": "eslint --cache --fix"
   },
   "repository": {
     "type": "git",
