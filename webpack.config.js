@@ -17,7 +17,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts?$/,
+        test: /\.tsx?$/,
         use: "ts-loader",
         exclude: path.resolve(__dirname, "node_modules"),
       },
@@ -25,9 +25,7 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx"],
-    alias: {
-      src: path.resolve(__dirname, "src/"),
-    },
+    modules: [path.resolve(__dirname, "src"), "node_modules"],
   },
   plugins: [
     new Dotenv({ path: path.resolve(__dirname, "src/.env") }),

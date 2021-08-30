@@ -1,16 +1,16 @@
 import express from "express";
 import cors from "cors";
+import "lib/env";
+import routeHandler from "routes/routeHandler";
 
 const PORT: string | number = process.env.PORT || 5000;
 
-let app: express.Application = express();
+const app: express.Application = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req: express.Request, res: express.Response) => {
-  res.send("Welcome!");
-});
+routeHandler(app);
 
 app.listen(PORT);
