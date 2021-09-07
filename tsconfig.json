@@ -15,5 +15,5 @@
     },
     "moduleResolution": "node"
   },
-  "include": ["./src/**/*", "webpack.config.js"]
+  "include": ["./src/**/*", "webpack.config.js", "knexfile.ts"]
 }
