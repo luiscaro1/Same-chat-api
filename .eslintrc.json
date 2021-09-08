@@ -18,7 +18,8 @@
   "ignorePatterns": "webpack.config.js",
   "rules": {
     "prettier/prettier": "error",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "func-names": "off"
   },
   "settings": {
     "import/parsers": {
