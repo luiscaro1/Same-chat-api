@@ -17,19 +17,36 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|js)?$/,
         use: "ts-loader",
-        exclude: path.resolve(__dirname, "node_modules"),
+        exclude: /node_modules/,
       },
     ],
   },
   resolve: {
     extensions: [".ts", ".js", ".tsx"],
-    modules: [path.resolve(__dirname, "src"), "node_modules"],
+    modules: [
+      path.resolve(__dirname, "src"),
+      path.resolve(__dirname, "node_modules"),
+    ],
   },
   plugins: [
-    new Dotenv({ path: path.resolve(__dirname, "src/.env") }),
+   
+    new Dotenv({ path: path.resolve(__dirname, ".env") }),
     new NodemonPlugin(),
     new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
+    new webpack.NormalModuleReplacementPlugin(
+      /m[sy]sql2?|oracle(db)?|sqlite3|pg-(native|query)/
+    ),
+    
+  ],
+
+  externals: [
+    {
+      "utf-8-validate": "commonjs utf-8-validate",
+      bufferutil: "commonjs bufferutil",
+      knex: 'commonjs knex'
+      
+    },
   ],
 };

@@ -6,4 +6,4 @@ COPY . /app/
 
 RUN npm i
 
-CMD npm run dev --bind:0.0.0.0
+CMD npm run webpack-dev --bind:0.0.0.0

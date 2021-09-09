@@ -1,23 +1,37 @@
-import { Knex } from "knex";
+// Update with your config settings.
 
-const { HOST, PORT, USER, PW, DB } = process.env;
+const config = {
+  development: {
+    client: "postgresql",
+    connection: {
+      database: "postgres",
+      user: "postgres",
+      password: "postgres",
+    },
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      tableName: "knex_migrations",
+    },
+  },
 
-const configs: Knex.Config = {
-  client: "pg",
-  connection: {
-    port: parseInt(PORT as string, 10),
-    host: HOST,
-    database: DB,
-    user: USER,
-    password: PW,
-  },
-  pool: {
-    min: 2,
-    max: 10,
-  },
-  migrations: {
-    tableName: "migrations",
+  production: {
+    client: "postgresql",
+    connection: {
+      database: "my_db",
+      user: "username",
+      password: "password",
+    },
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      tableName: "knex_migrations",
+    },
   },
 };
 
-export default configs;
+export default config;

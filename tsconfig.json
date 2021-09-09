@@ -4,7 +4,7 @@
     "emitDecoratorMetadata": true,
     "target": "ES2016",
     "module": "CommonJS",
-    "outDir": "./dist",
+    "outDir": "./out",
     "esModuleInterop": true,
     "sourceMap": true,
     "strict": true,
@@ -12,10 +12,10 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"],
-      "*": ["node_modules/*", "src/*"]
+      "*": ["src/*"]
     },
     "moduleResolution": "node"
   },
-  "include": ["./src/**/*", "webpack.config.js", "knexfile.ts"]
+
+  "exclude": ["node_modules"]
 }

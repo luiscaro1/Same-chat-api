@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --watch",
+    "webpack-dev": "webpack --watch --stats-error-details",
+    "ts-dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register src/index.ts",
     "dc": "docker compose -f docker-compose.dev.yml up --build",
     "pc": "docker compose -f docker-compose.production.yml up --build",
     "build": "webpack",
@@ -52,10 +53,13 @@
     "nodemon-webpack-plugin": "^4.5.2",
     "prettier": "^2.3.2",
     "ts-loader": "^9.2.5",
+    "ts-node": "^10.2.1",
+    "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.2",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.0.0"
+    "webpack-dev-server": "^4.0.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { storeMessage, getAllRecipients } from "controllers/inbox";
+import InboxController from "controllers/inbox";
 
 const router: Router = Router();
 
-router.post("/message", storeMessage);
+// TODO: Find how access the this  key word in the class method
+router.post("/message", InboxController.storeMessage);
 
-router.get("/all", getAllRecipients);
+router.get("/all", InboxController.getAllRecipients);
 
 export default router;
