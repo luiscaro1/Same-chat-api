@@ -7,6 +7,7 @@ const config = {
       database: "postgres",
       user: "postgres",
       password: "postgres",
+      host: "chat-db",
     },
     pool: {
       min: 2,

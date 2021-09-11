@@ -1,6 +1,6 @@
 import { find } from "lodash";
 
-export class Container {
+class Container {
   public providers: { [key: string]: any } = {};
 
   public resolve(token: string) {

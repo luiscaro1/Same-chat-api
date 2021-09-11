@@ -2,26 +2,42 @@ import express from "express";
 import cors from "cors";
 import http from "http";
 import { Server, Socket } from "socket.io";
-import routeHandler from "routes/routeHandler";
 import "lib/env";
+import Router from "services/router";
+import ControllerHandler from "services/ControllerHandler";
+import Inject from "./services/decorators/inject";
 
-const PORT: string | number = process.env.PORT || 5001;
+class Application {
+  @Inject("router") public static r: Router;
 
-const app: express.Application = express();
+  static init() {
+    const PORT: string | number = process.env.PORT || 5001;
 
-app.use(cors());
-app.use(express.json());
+    const app = express();
 
-routeHandler(app);
+    ControllerHandler.use();
 
-const httpServer: http.Server = http.createServer(app);
+    app.use(Application.r.router);
 
-const io = new Server(httpServer);
+    app.use(cors());
+    app.use(express.json());
 
-io.on("connection", (socket: Socket) => {
-  // socket.onAny((event, ...args) => {
-  // console.log(event, args);
-  // });
-});
+    // routeHandler(app);
 
-httpServer.listen(PORT);
+    const httpServer: http.Server = http.createServer(app);
+
+    const io = new Server(httpServer);
+
+    io.on("connection", (socket: Socket) => {
+      // socket.onAny((event, ...args) => {
+      // console.log(event, args);
+      // });
+    });
+
+    httpServer.listen(PORT);
+  }
+}
+
+Application.init();
+
+export default Application;
