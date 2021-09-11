@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
+import Injectable from "./decorators/injectable";
 
+Injectable("controllerHandler");
 class ControllerHandler {
   public static use() {
     fs.readdirSync("./src/controllers").forEach((file) => {
@@ -9,4 +11,4 @@ class ControllerHandler {
   }
 }
 
-export default ControllerHandler;
+export default ControllerHandler.use();

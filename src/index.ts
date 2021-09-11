@@ -4,7 +4,7 @@ import http from "http";
 import { Server, Socket } from "socket.io";
 import "lib/env";
 import Router from "services/router";
-import ControllerHandler from "services/ControllerHandler";
+import "services/ControllerHandler";
 import Inject from "./services/decorators/inject";
 
 class Application {
@@ -14,8 +14,6 @@ class Application {
     const PORT: string | number = process.env.PORT || 5001;
 
     const app = express();
-
-    ControllerHandler.use();
 
     app.use(Application.r.router);
 
