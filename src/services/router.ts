@@ -1,7 +1,5 @@
 import express from "express";
 import Injectable from "services/decorators/injectable";
-import fs from "fs";
-import path from "path";
 
 @Injectable("router")
 class Router {

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import Injectable from "./decorators/injectable";
+import Injectable from "services/decorators/injectable";
 
 Injectable("controllerHandler");
 class ControllerHandler {
