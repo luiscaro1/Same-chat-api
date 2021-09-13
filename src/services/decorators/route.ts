@@ -1,18 +1,29 @@
 import Router from "services/router";
-import Inject from "./inject";
+import Inject from "services/decorators/inject";
+import express from "express";
+import { FunctionBase } from "lodash";
 
 class RouteHandler {
-  @Inject("router") public handler!: Router;
+  @Inject("router") public static handler: Router;
 
-  handle = (type: string, path: string): any => {
-    const { router } = this.handler;
+  public static handle(type: string, path: string): FunctionBase {
+    const { router } = RouteHandler.handler;
 
-    return (_target: any, _key: any, _descriptor: any): void => {
+    interface decorator {
+      value: express.Application;
+    }
+
+    return (
+      _target: FunctionConstructor,
+      _key: string,
+      _descriptor: decorator
+    ): void => {
       switch (type.toLowerCase()) {
         case "get":
           router.get(path, (req, res) => {
             _descriptor.value(req, res);
           });
+
           break;
         case "post":
           router.post(path, (req, res) => {
@@ -35,7 +46,7 @@ class RouteHandler {
           });
       }
     };
-  };
+  }
 }
 
-export default new RouteHandler().handle;
+export default RouteHandler.handle;

@@ -3,24 +3,25 @@ import cors from "cors";
 import http from "http";
 import { Server, Socket } from "socket.io";
 import "lib/env";
+
 import Router from "services/router";
-import "services/ControllerHandler";
+import "controllers";
+
 import Inject from "./services/decorators/inject";
 
 class Application {
   @Inject("router") public static r: Router;
 
-  static init() {
+  static init(): void {
     const PORT: string | number = process.env.PORT || 5001;
 
     const app = express();
 
-    app.use(Application.r.router);
-
     app.use(cors());
     app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-    // routeHandler(app);
+    app.use(Application.r.router);
 
     const httpServer: http.Server = http.createServer(app);
 

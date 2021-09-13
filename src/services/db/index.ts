@@ -4,7 +4,7 @@ import knex, { Knex } from "knex";
 import Injectable from "services/decorators/injectable";
 
 @Injectable("dbContext")
-export default class DbContext {
+class DbContext {
   public db: Knex;
 
   constructor() {
@@ -17,3 +17,5 @@ export default class DbContext {
 
   // TODO: insert getters and setters for the different tables
 }
+
+export default DbContext;

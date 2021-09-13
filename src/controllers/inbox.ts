@@ -6,23 +6,44 @@ import route from "services/decorators/route";
 
 @Injectable("inboxController")
 class InboxController {
-  @Inject("dbContext") public dbContext!: DbContext;
+  @Inject("dbContext") public static dbContext: DbContext;
 
+  // TODO: Handle media messages with media server
   @route("POST", "/inbox/message")
-  public async storeMessage(req: express.Request, res: express.Response) {
-    // TODO
-    try {
-      const rooms = await this.dbContext.db.select().from("Room");
-      res.json(rooms);
-    } catch (err) {
-      res.json(err);
-    }
+  public static async storeMessage(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    const { content, type, uid, mid, rid } = req.body;
+    await InboxController.dbContext.db
+      .insert({
+        content,
+        type,
+        uid,
+        mid,
+        rid,
+      })
+      .into("Message")
+      .then(() => {
+        res.status(201).end();
+      })
+
+      .catch((err) => {
+        res.status(400).send(err);
+      });
   }
 
-  getAllRecipients = async (_req: express.Request, res: express.Response) => {
+  // TODO
+
+  @route("POST", "/inbox/all")
+  public static async getAllRecipients(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
     // TODO
+
     res.json("Get messages");
-  };
+  }
 }
 
-export default new InboxController();
+export default InboxController;
