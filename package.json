@@ -2,10 +2,10 @@
   "name": "Same-chat-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "Startup.js",
   "scripts": {
     "webpack-dev": "webpack --watch --stats-error-details",
-    "ts-dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register src/index.ts",
+    "ts-dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register src/Startup.ts",
     "dc": "docker compose -f docker-compose.dev.yml up --build",
     "pc": "docker compose -f docker-compose.production.yml up --build",
     "build": "webpack",
@@ -13,8 +13,8 @@
     "format": "prettier --write \"**/*.+(ts|tsx|js|jsx|json|yml|yaml|css|md)\"",
     "lint": "eslint src/**/*",
     "prepare": "husky install",
-    "migrations-up": "npx knex migrate:up add--knexfile ./src/services/db/knexfile",
-    "migrations-down": "npx knex migrate:down --knexfile ./src/services/db/knexfile"
+    "migrations-up": "npx knex migrate:up add--knexfile ./src/services/db/Knexfile",
+    "migrations-down": "npx knex migrate:down --knexfile ./src/services/db/Knexfile"
   },
   "lint-staged": {
     "*.+(ts)": [

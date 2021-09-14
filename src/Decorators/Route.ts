@@ -1,5 +1,5 @@
-import Router from "services/router";
-import Inject from "services/decorators/inject";
+import Router from "Router";
+import Inject from "Decorators/Inject";
 import express from "express";
 import { FunctionBase } from "lodash";
 

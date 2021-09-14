@@ -8,7 +8,7 @@ const NodemonPlugin = require("nodemon-webpack-plugin");
 module.exports = {
   target: "node",
   mode: "development",
-  entry: "./src/index.ts",
+  entry: "./src/Startup.ts",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
@@ -31,22 +31,19 @@ module.exports = {
     ],
   },
   plugins: [
-   
     new Dotenv({ path: path.resolve(__dirname, ".env") }),
     new NodemonPlugin(),
     new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
     new webpack.NormalModuleReplacementPlugin(
       /m[sy]sql2?|oracle(db)?|sqlite3|pg-(native|query)/
     ),
-    
   ],
 
   externals: [
     {
       "utf-8-validate": "commonjs utf-8-validate",
       bufferutil: "commonjs bufferutil",
-      knex: 'commonjs knex'
-      
+      knex: "commonjs knex",
     },
   ],
 };

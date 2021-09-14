@@ -1,9 +1,9 @@
 import express from "express";
-import Injectable from "services/decorators/injectable";
-import Inject from "services/decorators/inject";
-import route from "services/decorators/route";
-import InboxDAO from "daos/inbox";
-import Message from "types/inbox";
+import Injectable from "Decorators/Injectable";
+import Inject from "Decorators/Inject";
+import route from "Decorators/Route";
+import InboxDAO from "Daos/Inbox";
+import Message from "Types/Inbox";
 
 @Injectable("inboxController")
 class InboxController {

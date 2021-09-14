@@ -2,12 +2,11 @@ import express from "express";
 import cors from "cors";
 import http from "http";
 import { Server, Socket } from "socket.io";
-import "lib/env";
+import "Lib/Env";
+import Router from "Router";
+import "Controllers/InstantiateControllers";
 
-import Router from "services/router";
-import "controllers";
-
-import Inject from "./services/decorators/inject";
+import Inject from "./Decorators/Inject";
 
 class Application {
   @Inject("router") public static routehandler: Router;

@@ -1,8 +1,8 @@
-import Container from "services/container";
+import ServiceContainer from "ServiceContainer";
 import { FunctionBase } from "lodash";
 
 export default function Injectable(token: string): FunctionBase {
   return function (Target: FunctionConstructor): void {
-    Container.providers[token] = new Target();
+    ServiceContainer.providers[token] = new Target();
   };
 }
