@@ -10,7 +10,7 @@ import "controllers";
 import Inject from "./services/decorators/inject";
 
 class Application {
-  @Inject("router") public static r: Router;
+  @Inject("router") public static routehandler: Router;
 
   static init(): void {
     const PORT: string | number = process.env.PORT || 5001;
@@ -21,7 +21,7 @@ class Application {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    app.use(Application.r.router);
+    app.use(this.routehandler.router);
 
     const httpServer: http.Server = http.createServer(app);
 

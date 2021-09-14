@@ -1,12 +1,13 @@
 import express from "express";
 import Injectable from "services/decorators/injectable";
 import Inject from "services/decorators/inject";
-import DbContext from "services/db";
 import route from "services/decorators/route";
+import InboxDAO from "daos/inbox";
+import Message from "types/inbox";
 
 @Injectable("inboxController")
 class InboxController {
-  @Inject("dbContext") public static dbContext: DbContext;
+  @Inject("inboxDAO") public static inboxDAO: InboxDAO;
 
   // TODO: Handle media messages with media server
   @route("POST", "/inbox/message")
@@ -14,23 +15,12 @@ class InboxController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const { content, type, uid, mid, rid } = req.body;
-    await InboxController.dbContext.db
-      .insert({
-        content,
-        type,
-        uid,
-        mid,
-        rid,
-      })
-      .into("Message")
-      .then(() => {
-        res.status(201).end();
-      })
-
-      .catch((err) => {
-        res.status(400).send(err);
-      });
+    try {
+      await InboxController.inboxDAO.storeMessage(req.body as Message);
+      res.status(201).end();
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 
   // TODO
@@ -40,8 +30,6 @@ class InboxController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    // TODO
-
     res.json("Get messages");
   }
 }
