@@ -1,6 +1,6 @@
 import express from "express";
-import Injectable from "Decorators/Injectable";
 import { find } from "lodash";
+import Injectable from "@/Decorators/Injectable";
 
 @Injectable("router")
 class Router {

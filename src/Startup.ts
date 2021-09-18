@@ -1,17 +1,17 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
-import { Server, Socket } from "socket.io";
-import "Lib/Env";
-import Router from "Router";
-import "Controllers/InstantiateControllers";
 
-import Inject from "./Decorators/Inject";
+import { Server, Socket } from "socket.io";
+import "@/Lib/Env";
+import Router from "@/Router";
+import "@/Controllers/InstantiateControllers";
+import Inject from "@/Decorators/Inject";
 
 class Application {
   @Inject("router") public static routehandler: Router;
 
-  static init(): void {
+  public static init(): void {
     const PORT: string | number = process.env.PORT || 5001;
 
     const app = express();
@@ -27,9 +27,9 @@ class Application {
     const io = new Server(httpServer);
 
     io.on("connection", (socket: Socket) => {
-      // socket.onAny((event, ...args) => {
-      // console.log(event, args);
-      // });
+      socket.onAny((event, ...args) => {
+        console.log(event, args);
+      });
     });
 
     httpServer.listen(PORT);

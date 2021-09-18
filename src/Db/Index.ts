@@ -1,7 +1,7 @@
-import knexfile from "Db/Knexfile";
-
 import knex, { Knex } from "knex";
-import Injectable from "Decorators/Injectable";
+import knexfile from "@/Db/Knexfile";
+
+import Injectable from "@/Decorators/Injectable";
 
 @Injectable("dbContext")
 class DbContext {

@@ -1,12 +1,13 @@
-import Router from "Router";
-import Inject from "Decorators/Inject";
-import express from "express";
 import { FunctionBase } from "lodash";
+import express from "express";
+import path from "path";
+import Router from "@/Router";
+import Inject from "@/Decorators/Inject";
 
 class RouteHandler {
   @Inject("router") public static handler: Router;
 
-  public static handle(type: string, path: string): FunctionBase {
+  public static handle(type: string, p: string): FunctionBase {
     const { router } = RouteHandler.handler;
 
     interface decorator {
@@ -18,30 +19,35 @@ class RouteHandler {
       _key: string,
       _descriptor: decorator
     ): void => {
+      const base = path.join(
+        "/",
+        _target.name.toLocaleLowerCase().split("controller")[0]
+      );
+
       switch (type.toLowerCase()) {
         case "get":
-          router.get(path, (req, res) => {
+          router.get(path.join(base, p), (req, res) => {
             _descriptor.value(req, res);
           });
 
           break;
         case "post":
-          router.post(path, (req, res) => {
+          router.post(path.join(base, p), (req, res) => {
             _descriptor.value(req, res);
           });
           break;
         case "put":
-          router.put(path, (req, res) => {
+          router.put(path.join(base, p), (req, res) => {
             _descriptor.value(req, res);
           });
           break;
         case "delete":
-          router.delete(path, (req, res) => {
+          router.delete(path.join(base, p), (req, res) => {
             _descriptor.value(req, res);
           });
           break;
         default:
-          router.get(path, (req, res) => {
+          router.get(path.join(base, p), (req, res) => {
             _descriptor.value(req, res);
           });
       }

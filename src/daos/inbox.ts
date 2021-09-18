@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
 // TODO: Create a class  that contains all the database access and moditication methods.
 
-import Inject from "Decorators/Inject";
-
-import DbContext from "Db/Index";
-import Message from "Types/Inbox";
 import { v4 as uuid } from "uuid";
-import Injectable from "Decorators/Injectable";
+import Inject from "@/Decorators/Inject";
+
+import DbContext from "@/Db/Index";
+import Message from "@/Types/Inbox";
+import Injectable from "@/Decorators/Injectable";
 
 @Injectable("inboxDAO")
 class InboxDAO {

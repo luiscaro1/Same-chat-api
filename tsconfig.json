@@ -12,10 +12,8 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*"]
+      "@/*": ["src/*"]
     },
     "moduleResolution": "node"
-  },
-
-  "exclude": ["node_modules"]
+  }
 }
