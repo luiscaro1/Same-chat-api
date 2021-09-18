@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-
+// TODO: Verify wether name uniqueness is necessary
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable("Room", (table) => {
     table.uuid("rid").unique().notNullable();

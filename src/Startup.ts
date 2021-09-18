@@ -7,9 +7,10 @@ import "@/Lib/Env";
 import Router from "@/Router";
 import "@/Controllers/InstantiateControllers";
 import Inject from "@/Decorators/Inject";
+import EventHandler from "@/SocketEventHandlers/EventHandler";
 
 class Application {
-  @Inject("router") public static routehandler: Router;
+  @Inject("router") private static routehandler: Router;
 
   public static init(): void {
     const PORT: string | number = process.env.PORT || 5001;
@@ -27,9 +28,7 @@ class Application {
     const io = new Server(httpServer);
 
     io.on("connection", (socket: Socket) => {
-      socket.onAny((event, ...args) => {
-        console.log(event, args);
-      });
+      EventHandler.handle(socket);
     });
 
     httpServer.listen(PORT);
