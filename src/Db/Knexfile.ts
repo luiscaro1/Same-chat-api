@@ -7,7 +7,7 @@ const config = {
       database: "postgres",
       user: "postgres",
       password: "postgres",
-      host: "localhost",
+      host: process.env.BUILD === "CONATAINER" ? "chat-db" : "localhost",
     },
     pool: {
       min: 2,

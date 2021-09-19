@@ -4,15 +4,37 @@ import path from "path";
 import Router from "@/Router";
 import Inject from "@/Decorators/Inject";
 
+const types: Array<string> = [
+  "get",
+  "post",
+  "put",
+  "patch",
+  "delete",
+  "copy",
+  "head",
+  "options",
+  "link",
+  "unlink",
+  "pruge",
+  "lock",
+  "unlock",
+  "propfind",
+  "view",
+];
+
+interface StringRouter extends express.Router {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [index: string]: any;
+}
+interface decorator {
+  value: express.Application;
+}
+
 class RouteHandler {
   @Inject("router") public static handler: Router;
 
   public static handle(type: string, p: string): FunctionBase {
-    const { router } = RouteHandler.handler;
-
-    interface decorator {
-      value: express.Application;
-    }
+    const { router }: { router: StringRouter } = RouteHandler.handler;
 
     return (
       _target: FunctionConstructor,
@@ -24,33 +46,18 @@ class RouteHandler {
         _target.name.toLocaleLowerCase().split("controller")[0]
       );
 
-      switch (type.toLowerCase()) {
-        case "get":
-          router.get(path.join(base, p), (req, res) => {
-            _descriptor.value(req, res);
-          });
+      // eslint-disable-next-line no-underscore-dangle
+      const _type = type.toLowerCase();
 
-          break;
-        case "post":
-          router.post(path.join(base, p), (req, res) => {
-            _descriptor.value(req, res);
-          });
-          break;
-        case "put":
-          router.put(path.join(base, p), (req, res) => {
-            _descriptor.value(req, res);
-          });
-          break;
-        case "delete":
-          router.delete(path.join(base, p), (req, res) => {
-            _descriptor.value(req, res);
-          });
-          break;
-        default:
-          router.get(path.join(base, p), (req, res) => {
-            _descriptor.value(req, res);
-          });
-      }
+      if (!types.includes(_type)) return;
+
+      // eslint-disable-next-line no-underscore-dangle
+      router[_type](
+        path.join(base, p),
+        (req: express.Request, res: express.Response) => {
+          _descriptor.value(req, res);
+        }
+      );
     };
   }
 }

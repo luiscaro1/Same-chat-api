@@ -9,11 +9,14 @@
     "sourceMap": true,
     "strict": true,
     "skipLibCheck": true,
-    "allowJs": true,
+    "types": [
+      "node",
+      "webpack-env" // here
+    ],
+    // "allowJs": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    },
-    "moduleResolution": "node"
+    }
   }
 }
