@@ -1,30 +1,45 @@
-/* eslint-disable camelcase */
-// TODO: Create a class  that contains all the database access and moditication methods.
-
 import { v4 as uuid } from "uuid";
-import Inject from "@/Decorators/Inject";
 
+import Inject from "@/Decorators/Inject";
 import DbContext from "@/Db/Index";
 import Message from "@/Types/Inbox";
 import Injectable from "@/Decorators/Injectable";
+
+interface MessageBody extends Body {
+  rid: string;
+  uid: string;
+  type: string;
+  content: string;
+}
+
+interface MulterFile extends Express.Multer.File {
+  filename: string;
+}
 
 @Injectable("inboxDAO")
 class InboxDAO {
   @Inject("dbContext") public dbContext!: DbContext;
 
-  public async storeMessage({
-    rid,
-    uid,
-    content,
-    type,
-  }: Message): Promise<void> {
+  public async storeMessage(
+    files: { [name: string]: MulterFile },
+    body: MessageBody
+  ): Promise<void> {
+    const { rid, uid, type, content } = body;
+    let tcontent = null;
+
+    if (type === "FILE") {
+      tcontent = files[0].filename;
+    } else {
+      tcontent = content;
+    }
+
     await this.dbContext.db
       .insert({
         mid: uuid(),
         rid,
         uid,
         type,
-        content,
+        content: tcontent,
       })
       .into("Message");
   }

@@ -15,11 +15,6 @@ export default function HandleInboxEvents(
     socket.join(rid);
   });
   socket.on(MESSAGE, async (msg: Message) => {
-    try {
-      await inboxDAO.storeMessage(msg);
-      socket.to(msg.rid).emit(MESSAGE, msg);
-    } catch (err) {
-      // silent fail
-    }
+    socket.to(msg.rid).emit(MESSAGE, msg);
   });
 }

@@ -19,7 +19,9 @@
   "rules": {
     "prettier/prettier": "error",
     "import/extensions": "off",
-    "func-names": "off"
+    "func-names": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off"
   },
   "settings": {
     "import/parsers": {

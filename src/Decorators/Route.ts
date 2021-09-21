@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { FunctionBase } from "lodash";
 import express from "express";
 import path from "path";
@@ -26,6 +27,7 @@ interface StringRouter extends express.Router {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [index: string]: any;
 }
+
 interface decorator {
   value: express.Application;
 }
@@ -33,8 +35,11 @@ interface decorator {
 class RouteHandler {
   @Inject("router") public static handler: Router;
 
-  public static handle(type: string, p: string): FunctionBase {
+  public static handle(...args: Array<unknown>): FunctionBase {
     const { router }: { router: StringRouter } = RouteHandler.handler;
+
+    const type: string = args[0] as string;
+    const p: string = args[args.length - 1] as string;
 
     return (
       _target: FunctionConstructor,
@@ -46,14 +51,13 @@ class RouteHandler {
         _target.name.toLocaleLowerCase().split("controller")[0]
       );
 
-      // eslint-disable-next-line no-underscore-dangle
       const _type = type.toLowerCase();
 
       if (!types.includes(_type)) return;
 
-      // eslint-disable-next-line no-underscore-dangle
       router[_type](
         path.join(base, p),
+        args.slice(1, args.length - 1),
         (req: express.Request, res: express.Response) => {
           _descriptor.value(req, res);
         }

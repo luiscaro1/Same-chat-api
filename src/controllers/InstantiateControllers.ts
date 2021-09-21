@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
+import { FunctionBase } from "lodash";
 
 interface LooseObject {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  [key: string]: FunctionBase;
 }
 
 const api: LooseObject = {};

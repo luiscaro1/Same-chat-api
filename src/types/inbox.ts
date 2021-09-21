@@ -5,6 +5,7 @@ export default interface Message {
   uid: string;
   content: string;
   type: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date | undefined | null;
+  updated_at: Date | undefined | null;
+  files: Array<File> | undefined | null;
 }

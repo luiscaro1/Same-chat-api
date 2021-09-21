@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
-
+import fileUpload from "express-fileupload";
 import { Server, Socket } from "socket.io";
 import "@/Lib/Env";
 import Router from "@/Router";
@@ -19,6 +19,7 @@ class Application {
 
     app.use(cors());
     app.use(express.json());
+    // app.use(fileUpload());
     app.use(express.urlencoded({ extended: true }));
 
     app.use(this.routehandler.router);
