@@ -3,7 +3,7 @@ version: "3"
 services:
   chat-api:
     build:
-      dockerfile: dockerfile.prod
+      dockerfile: dockerfile
       context: .
     restart: always
     ports:
