@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 export default interface Message {
   mid: string;
-  rid: string;
+  lid: string;
   uid: string;
   content: string;
   type: string;

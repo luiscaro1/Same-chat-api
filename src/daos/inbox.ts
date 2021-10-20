@@ -1,12 +1,13 @@
-import { v4 as uuid } from "uuid";
-
+/* eslint-disable camelcase */
 import Inject from "@/Decorators/Inject";
 import DbContext from "@/Db/Index";
+import SocketServer from "@/SocketServer";
 import Message from "@/Types/Inbox";
 import Injectable from "@/Decorators/Injectable";
+import { MESSAGE } from "@/SocketEventHandlers/Events/Inbox";
 
-interface MessageBody extends Body {
-  rid: string;
+interface MessageBody {
+  lid: string;
   uid: string;
   type: string;
   content: string;
@@ -20,76 +21,68 @@ interface MulterFile extends Express.Multer.File {
 class InboxDAO {
   @Inject("dbContext") public dbContext!: DbContext;
 
+  @Inject("socketServer") public socketServer!: SocketServer;
+
+  public async store(mb: MessageBody) {
+    const mid = await this.dbContext.db
+      .insert(mb)
+      .into("Message")
+      .returning("mid");
+
+    const message = (
+      await this.dbContext.db
+        .raw(`select * from "Message" as M natural inner join (select uid,user_name,avatar_url from "User")as U
+      where M.uid = U.uid and M.mid='${mid}'`)
+    ).rows[0];
+
+    this.socketServer.socket
+      .to((message as Message).lid)
+      .emit(MESSAGE, message);
+  }
+
   public async storeMessage(
     files: { [name: string]: MulterFile },
     body: MessageBody
   ): Promise<void> {
-    const { rid, uid, type, content } = body;
-    let tcontent = null;
+    const { lid, uid, type, content } = body;
 
     if (type === "FILE") {
-      tcontent = files[0].filename;
+      (files as any).forEach((file: MulterFile) => {
+        this.store({
+          lid,
+          uid,
+          type,
+          content: file.filename,
+        });
+      });
     } else {
-      tcontent = content;
-    }
-
-    await this.dbContext.db
-      .insert({
-        mid: uuid(),
-        rid,
+      this.store({
+        lid,
         uid,
         type,
-        content: tcontent,
-      })
-      .into("Message");
-  }
-
-  public async createRoom({
-    name,
-    uid,
-  }: {
-    name: string;
-    uid: string;
-  }): Promise<string> {
-    const rid = uuid();
-
-    // TODO: Verify if user exists
-
-    await this.dbContext.db.insert({ rid, name, members: [uid] }).into("Room");
-
-    return rid;
+        content,
+      });
+    }
   }
 
   public async getMessages({
     pageNumber,
     limit,
-    uid,
+    lid,
   }: {
     pageNumber: number;
     limit: number;
-    uid: string;
-  }): Promise<{ [id: string]: Array<Message> }> {
-    const rooms = await this.dbContext.db
-      .select("rid")
-      .from("Room")
-      .where("members", "@>", [uid]);
+    lid: string;
+  }): Promise<Array<Message>> {
+    const messages: Array<Message> = (
+      await this.dbContext.db
+        .raw(`select * from "Message" as M natural inner join (select uid,user_name,avatar_url from "User")as U
+      where M.uid = U.uid and M.lid='${lid}' order by created_at asc limit ${limit} offset ${
+        (pageNumber - 1) * limit
+      } `)
+    ).rows;
 
-    const mapped: { [id: string]: Array<Message> } = {};
-
-    const promises = await rooms.map(async ({ rid }) => {
-      const messages: Array<Message> = await this.dbContext.db
-        .select()
-        .from("Message")
-        .where("rid", rid)
-        .limit(limit)
-        .offset((pageNumber - 1) * limit);
-
-      mapped[rid] = messages;
-    });
-
-    await Promise.all(promises);
-
-    return mapped;
+    return messages;
   }
 }
 

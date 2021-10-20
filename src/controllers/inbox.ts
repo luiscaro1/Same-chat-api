@@ -27,16 +27,14 @@ class InboxController {
     }
   }
 
-  // TODO
-
-  @route("POST", "rooms")
-  public static async getAllRecipients(
+  @route("POST", "messages")
+  public static async getAllMessages(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
     try {
-      const messages = await InboxController.inboxDAO.getMessages(req.body);
-      res.json(messages);
+      const lobbies = await InboxController.inboxDAO.getMessages(req.body);
+      res.json(lobbies);
     } catch (err) {
       res.status(400).send(err);
     }
