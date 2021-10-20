@@ -10,9 +10,8 @@ class DbContext {
   public db: Knex;
 
   constructor() {
-    this.db = knex(
-      process.env.NODE_ENV === "production" ? production : development
-    );
+    console.log(process.env.NODE_ENV);
+    this.db = knex(production);
   }
 
   // TODO: insert getters and setters for the different tables
