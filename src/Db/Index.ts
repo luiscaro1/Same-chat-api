@@ -11,7 +11,9 @@ class DbContext {
 
   constructor() {
     console.log(process.env.NODE_ENV);
-    this.db = knex(production);
+    this.db = knex(
+      process.env.NODE_ENV === "production" ? production : development
+    );
   }
 
   // TODO: insert getters and setters for the different tables

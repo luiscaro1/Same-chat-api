@@ -39,6 +39,14 @@ class InboxController {
       res.status(400).send(err);
     }
   }
+
+  @route("GET", "env")
+  public static async getEnv(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    res.send(process.env.NODE_ENV);
+  }
 }
 
 export default InboxController;

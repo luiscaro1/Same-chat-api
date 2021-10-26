@@ -1,15 +1,26 @@
 const path = require("path");
 
+// plugins
+const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
+const { ESBuildMinifyPlugin } = require("esbuild-loader");
 
 module.exports = {
   target: "node",
   mode: "production",
+  optimization: {
+    minimizer: [
+      new ESBuildMinifyPlugin({
+        keepNames: true,
+      }),
+    ],
+  },
   entry: "./src/Startup.ts",
   output: {
-    filename: "main.js",
+    filename: "prod.js",
     path: path.resolve(__dirname, "dist"),
   },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -26,6 +37,7 @@ module.exports = {
     extensions: [".ts", ".js", ".tsx"],
   },
   plugins: [
+    new Dotenv({ path: path.resolve(__dirname, ".env") }),
     new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
     new webpack.NormalModuleReplacementPlugin(
       /m[sy]sql2?|oracle(db)?|sqlite3|pg-(native|query)/
